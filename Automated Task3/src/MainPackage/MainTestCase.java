@@ -63,7 +63,7 @@ public class MainTestCase {
 
 	@After
 	public void aftertest() {
-		//driver.quit();
+		driver.quit();
 
 	}
 
