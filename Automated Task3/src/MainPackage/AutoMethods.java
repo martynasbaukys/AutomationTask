@@ -46,11 +46,10 @@ public class AutoMethods {
 	public static void checkElementIsDisplayedBy(WebDriver driver, String errorMessage, By by) throws InterruptedException {
 
 		try {
-			// identify element
-			WebElement t = driver.findElement(By.cssSelector("h4"));
-			// Explicit wait condition for visibility of element
+
+			WebElement t = driver.findElement(by);
 			WebDriverWait w = new WebDriverWait(driver, Duration.ofSeconds(10));
-			w.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h4")));
+			w.until(ExpectedConditions.visibilityOfElementLocated(by));
 			System.out.println("Element is visible");
 		} catch (NoSuchElementException ex) {
 			Assert.fail(errorMessage + "\n" + ex.toString());
