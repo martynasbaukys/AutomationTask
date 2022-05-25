@@ -1,8 +1,8 @@
 package MainPackage;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -18,13 +18,11 @@ public class AutoMethods {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
 		try {
-			//WebElement element = driver.findElement(by);
 			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(by));
 			element.click();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			Assert.fail(errorMessage + "\n" + ex.toString());
-			driver.close();
 		}
 	}
 
@@ -39,42 +37,28 @@ public class AutoMethods {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			Assert.fail(errorMessage + "\n" + ex.toString());
-			driver.close();
 		}
 	}
 
 	public static void checkElementIsDisplayedBy(WebDriver driver, String errorMessage, By by) throws InterruptedException {
-
 		try {
-
 			WebElement t = driver.findElement(by);
 			WebDriverWait w = new WebDriverWait(driver, Duration.ofSeconds(10));
 			w.until(ExpectedConditions.visibilityOfElementLocated(by));
-			System.out.println("Element is visible");
 		} catch (NoSuchElementException ex) {
 			Assert.fail(errorMessage + "\n" + ex.toString());
 		}
 	}
 
 	public static String generatePassword(int length) {
-		String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
-		String specialCharacters = "!@#$";
-		String numbers = "1234567890";
-		String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
-		Random random = new Random();
-		char[] password = new char[length];
+		final String allowedChars = "abcdefghijklmnopqrstuvwABCDEFGHIJKLMNOP0123456789!§$%&?*+#";
+		SecureRandom random = new SecureRandom();
+		StringBuilder pass = new StringBuilder(length);
 
-		password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
-		password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
-		password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
-		password[3] = numbers.charAt(random.nextInt(numbers.length()));
-
-		String finalPass = "";
-
-		for (int i = 4; i < length; i++) {
-			finalPass += combinedChars.charAt(random.nextInt(combinedChars.length()));
+		for (int i = 0; i < length; i++) {
+			pass.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
 		}
-		return finalPass;
+
+		return pass.toString();
 	}
 }
